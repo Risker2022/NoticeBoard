@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+<form action="/my_account/change_user" method="post">
+    <label for="curr_user">Current Username:</label>
+    <br>
+    <input type="text" id="curr_user" name="curr_user" required>
+    <hr>
+    <label for="new_pass">New Username:</label>
+    <br>
+    <input type="text" id="new_pass" name="new_pass" required>
+    <br>
+    <label for="com_new_pass">Confirm New Username:</label>
+    <br>
+    <input type="text" id="com_new_pass" name="com_new_pass" required>
+</form>
+{% endblock content %}

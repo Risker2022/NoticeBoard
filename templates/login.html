@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body, html {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container" style="justify-content: center; align-items: center; padding: 10px; border: 3px solid; margin: 5px">
+        <div class="centered-element">
+            <h1>Login</h1>
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <br>
+                <input type="text" id="username" name="username" placeholder="Username" required>
+                <br>
+                <br>
+                <label for="password">Password:</label>
+                <br>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <br>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+            {% if failed == True %}
+                <h2 style="background-color: pink; color: red">You have entered the wrong username or password. Please try again.</h2>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

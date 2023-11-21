@@ -1,0 +1,15 @@
+{
+  "announcements": {
+    "Welcome Announcement":["Hello! This is a site where announcements can be posted for better tracking","Admin","True"],
+    "Testing a new feature":["Why are you reading me","Person1","True"],
+    "Test Title 3":["Test Descrip","Person2","False"],
+    "Test Title 4":["Test Descrip","Person2","True"],
+    "Test Title 5":["Test Descrip","Person1","False"],
+    "Test Title 6":["Why are you reading me","Person1","True"],
+    "Test Title 7":["Test Descrip","Person1","False"]
+  },
+  "accounts": {
+    "Person1":"88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
+    "Person2":"9727bc3a31f5a09994a8408791a22db4b12502452e6e5d00a59a0ef8342b41cf"
+  }
+}

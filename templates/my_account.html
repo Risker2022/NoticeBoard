@@ -1,0 +1,66 @@
+{% extends 'layout.html' %}
+{% block content %}
+    {% if notices == {} %}
+        <h1 style="text-align: center">You Have No Announcements</h1>
+    {% else %}
+        <h1 style="text-align: center">My Announcements</h1>
+
+        <div class="row announcement-container">
+            {% for notice in notices %}
+                {% if notices[notice][2] == 'True' %}
+                    <div class="col-sm-2 announcement row" style="background-color: darkred">
+                        <h3 style="color: white">{{ notice }}</h3>
+                        <hr>
+                        <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
+                        <br>
+                        <hr>
+                        <div class="col-sm-6">
+                            <a href="/my_account/edit/{{ notice }}">Edit</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="/my_account/delete/{{ notice }}" style="text-align: right">Delete</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-sm-2 announcement row" style="background-color: darkblue">
+                        <h3 style="color: white">{{ notice }}</h3>
+                        <hr>
+                        <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
+                        <br>
+                        <hr>
+                        <div class="col-sm-6">
+                            <a href="/my_account/edit/{{ notice }}">Edit</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="/my_account/delete/{{ notice }}" style="text-align: right">Delete</a>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+<hr>
+<div style="text-align: center">
+    <form action="/my_account/add" method="get">
+        <input type="submit" style="font-size: 20px" value="Add Announcement">
+    </form>
+</div>
+<hr>
+<div class="row" style="justify-content: center">
+    <div class="col-sm-2">
+        <form action="/my_account/change_pass" method="get">
+            <input type="submit" style="font-size: 20px" value="Change Password">
+        </form>
+    </div>
+    <div class="col-sm-2">
+        <form action="/my_account/change_user" method="get">
+            <input type="submit" style="font-size: 20px" value="Change Username">
+        </form>
+    </div>
+    <div class="col-sm-2">
+        <form action="/my_account/del_acc" method="get">
+            <input type="submit" style="font-size: 20px" value="Delete Account">
+        </form>
+    </div>
+</div>
+{% endblock content %}

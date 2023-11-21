@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if notices == {} %}
+        <h1 style="text-align: center"><strong>No Announcement Found</strong></h1>
+        <h3 style="text-align: center">Please search another keyword.</h3>
+    {% else %}
+        <h1 style="text-align: center"><strong>Search Results</strong></h1>
+        <div class="row announcement-container">
+            {% for notice in notices %}
+                <div class="col-sm-2 announcement" style="background-color: green">
+                    <h3 style="color: white">{{ notice }}</h3>
+                    <hr>
+                    <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
+                    <br>
+                    <p class="blockquote-footer" style="color: black">Written by {{ notices[notice][1] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock content %}

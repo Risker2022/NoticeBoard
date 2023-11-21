@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div style="background-color: orange; padding: 10px; border: 2px solid; margin: 10px;">
+        <div>
+            <h1>Important <br>Announcements</h1>
+        </div>
+        <div class="row" style="padding: 5px">
+            {% for notice in notices %}
+                <div class="col-sm-4" style="border: 5px solid; margin: 5px">
+                    <h3>{{ notice }}</h3>
+                    <p class="blockquote">{{ notices[notice][0] }}</p>
+                    <p class="blockquote-footer">Written by {{ notices[notice][1] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+h1 {
+    font-family: fantasy;
+    color: black;
+}
+a.navbar-brand {
+    font-family: fantasy;
+}
+div.announcement {
+    margin: 5px;
+    border: 3px solid;
+    padding: 5px;
+}
+div.announcement-container {
+    margin: 2px;
+    padding: 8px;
+    align-items: center;
+    justify-content: center;
+}

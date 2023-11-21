@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container">
+    <form action="/my_account/add/add_logic" method="post">
+        <label for="title">Enter Title:</label>
+        <br>
+        <input type="text" id="title" name="title" required>
+        <hr>
+        <label for="descrip">Enter Description:</label>
+        <br>
+        <input type="text" id="descrip" name="descrip" required>
+        <hr>
+        <p><b>Choose Importance:</b></p>
+        <input type="radio" id="important" name="importance" value="Important" checked>
+        <label for="important">Important</label>
+        <br>
+        <input type="radio" id="unimportant" name="importance" value="Unimportant">
+        <label for="unimportant">Unimportant</label>
+        <hr>
+        <button type="submit">Submit</button>
+    </form>
+    <div style="background-color: grey; margin: 3px; border: 1px solid; padding: 5px; width: 500px">
+        <h1>Rules for adding</h1>
+        <p>- Title cannot be the same as other titles</p>
+    </div>
+</div>
+{% endblock content %}

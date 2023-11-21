@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <form action="/my_account/process_input" method="post">
+        <label for="notice"><b>Announcement to change:</b></label>
+        <br>
+        <select name="announcement" id="notice">
+            <option value="{{ target }}">{{ target }}</option>
+            {% for notice in notices %}
+            {% if notice != target %}
+            <option value="{{ notice }}">{{ notice }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <hr>
+        <label for="title"><b>Change Title:</b></label>
+        <br>
+        <input type="text" id="title" name="title">
+        <hr>
+        <label for="descrip"><b>Change Description:</b></label>
+        <br>
+        <input type="text" id="descrip" name="descrip">
+        <hr>
+        <p><b>Choose Importance:</b></p>
+        <input type="radio" id="important" name="importance" value="Important" checked>
+        <label for="important">Important</label>
+        <br>
+        <input type="radio" id="unimportant" name="importance" value="Unimportant">
+        <label for="unimportant">Unimportant</label>
+        <hr>
+        <button type="submit">Submit</button>
+    </form>
+    <div style="background-color: grey; margin: 3px; border: 1px solid; padding: 5px; width: 500px">
+        <h1>Rules for changing</h1>
+        <p>- Title cannot be the same as other titles</p>
+        <p>- Do not enter text if you want to keep the option the same</p>
+    </div>
+</div>
+{% endblock content %}
