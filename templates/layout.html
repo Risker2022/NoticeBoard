@@ -27,16 +27,16 @@
                 <li class="navbar-item">
                     <a class="nav-link" href="#">|</a>
                 </li>
-                {% if logined == False %}
+                {% if logined %}
+                <li class="navbar-item">
+                    <a class="nav-link" href="/my_account">My Account</a>
+                </li>
+                {% else %}
                 <li class="navbar-item">
                     <a class="nav-link" href="/login" method="get">Login</a>
                 </li>
                 <li class="navbar-item">
                     <a class="nav-link" href="/signup">Sign Up</a>
-                </li>
-                {% else %}
-                <li class="navbar-item">
-                    <a class="nav-link" href="/my_account">My Account</a>
                 </li>
                 {% endif %}
             </ul>

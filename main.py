@@ -27,9 +27,11 @@ def hash_obj(obj):
 
 
 data = read_file()
+notices = data["announcements"]
+accounts = data["accounts"]
+my_notices = {}
 
 user = None
-logined = False
 failed = False
 
 
@@ -40,42 +42,38 @@ def starter():
 
 @app.route("/home")
 def home():
-    global data
-    important = {title: specifications for title, specifications in data["announcements"].items()
-                 if specifications[-1] is True}
-    return render_template('home.html', notices=important, logined=logined)
+    important = {title: specifications for title, specifications in notices.items()
+                 if specifications[-1] == "True"}
+    return render_template('home.html', notices=important, logined=user)
 
 
 @app.route("/all")
 def announcements():
-    global lines
-    all_notices = {line.split(":")[0]: [line.split(":")[1], line.split(":")[2], line.split(":")[3]]
-                   for line in lines[:-1]}
-    return render_template("all.html", notices=all_notices, logined=logined)
+    return render_template("all.html", notices=notices, logined=user)
 
 
 @app.route("/search", methods=["POST"])
 def search():
-    global lines
     searched_word = request.form['search']
-    searched_notice = {line.split(":")[0]: [line.split(":")[1], line.split(":")[2]] for line in lines[:-1]
-                       if searched_word in line.split(":")[0]}
-    return render_template("search.html", notices=searched_notice, logined=logined)
+    searched_notice = {title: notices[title] for title in notices
+                       if searched_word in title}
+    return render_template("search.html", notices=searched_notice, logined=user)
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    global logined, accounts, failed, user
+    global failed, user, my_notices
 
     if request.method == 'POST':
 
         username = request.form['username']
-        password = request.form['password']
+        password = hash_obj(request.form['password'])
 
         if username in accounts:
             if accounts[username] == password:
-                logined = True
                 user = username
+                my_notices = {title: specifications for title, specifications in notices
+                              if specifications[2] == user}
                 return redirect(url_for('home'))
         failed = True
 
@@ -84,24 +82,20 @@ def login():
 
 @app.route("/signup", methods=['GET', 'POST'])
 def sign_up():
-    global logined, lines, accounts, failed, user
+    global data, accounts, failed, user
 
     if request.method == 'POST':
 
         new_username = request.form['username']
-        new_password = request.form['password']
-        confirm_pass = request.form['com_password']
+        new_password = hash_obj(request.form['password'])
+        confirm_pass = hash_obj(request.form['com_password'])
 
         if new_username not in accounts and confirm_pass == new_password:
 
             accounts[new_username] = new_password
-            rewritten = '\n'.join(lines[:-1])
-            rewritten += "\n" + str(accounts)[1:-1].replace("'", "").replace(" ", "")
+            data["accounts"] = accounts
+            update_file(accounts)
 
-            with open('database.txt', 'w') as file:
-                file.write(rewritten)
-
-            logined = True
             user = new_username
 
             return redirect(url_for('home'))
@@ -111,51 +105,80 @@ def sign_up():
 
 @app.route("/my_account")
 def my_account():
-    global lines, user, logined
-    if logined is True:
-        my_notices = {line.split(":")[0]: [line.split(":")[1], line.split(":")[2], line.split(":")[3]]
-                      for line in lines[:-1] if line.split(":")[2] == user}
-        return render_template('my_account.html', notices=my_notices, logined=logined)
+    if user:
+        return render_template('my_account.html', notices=my_notices, logined=user)
     return redirect(url_for('login'))
 
 
-@app.route('/my_account/edit/<title>')
+@app.route('/my_account/edit/<title>', methods=["GET", "POST"])
 def edit(title):
-    global user, lines, logined
-    if logined:
-        my_notices = {line.split(":")[0]: [line.split(":")[1], line.split(":")[2], line.split(":")[3]]
-                      for line in lines[:-1] if line.split(":")[2] == user}
+    global data, notices, my_notices
+    if user:
+        if request.method == "POST":
+            selected = request.form["announcement"]
+            title = request.form["title"]
+            descrip = request.form["descrip"]
+            importance = request.form["importance"]
+            if title not in notices:
+                temp = [selected, notices[selected]]
+                del my_notices[selected]
+                del notices[selected]
+                if title:
+                    temp[0] = title
+                if descrip:
+                    temp[1][0] = descrip
+                if importance.lower() == "important":
+                    temp[1][2] = 'True'
+                elif importance.lower() == "unimportant":
+                    temp[1][2] = 'False'
+                notices.update({temp[0]:temp[1]})
+                my_notices.update({temp[0]:temp[1]})
+                data["announcements"] = notices
+                update_file(data)
+                return redirect(url_for('my_account'))
         return render_template('edit.html', notices=my_notices, target=title)
     return redirect(url_for('login'))
 
 
 @app.route('/my_account/delete/<title>')
 def delete(title):
-    global user, lines, logined
-    if logined:
-        for index, line in enumerate(lines[:-1]):
-            new = line.split(":")
-            if title == new[0] and user == new[2]:
-                lines.pop(index)
-                with open('database.txt', 'w') as file:
-                    file.write('\n'.join(lines))
+    global data, notices, my_notices
+    if user:
+        for header, specifications in notices.items():
+            if header == title and specifications == user:
+                del notices[title]
+                del my_notices[title]
+                data["announcements"] = notices
+                update_file(data)
                 break
         return redirect(url_for('my_account'))
     return redirect(url_for('login'))
 
 
-@app.route('/my_account/add', methods=["GET"])
+@app.route('/my_account/add', methods=["GET", "POST"])
 def add():
-    global logined
-    if logined:
+    global data, notices, my_notices
+    if user:
+        if request.method == "POST":
+            title = request.form['title']
+            descrip = request.form['descrip']
+            importance = request.form['importance']
+            if title not in notices:
+                if importance == 'Important':
+                    importance = 'True'
+                else:
+                    importance = 'False'
+                notices.update({title:[descrip,user,importance]})
+                my_notices.update({title:[descrip,user,importance]})
+                data["announcements"] = notices
+                return redirect(url_for('my_account'))
         return render_template('add.html')
     return redirect(url_for('login'))
 
 
 @app.route('/my_account/change_pass', methods=["GET", "POST"])
 def change_password():
-    global logined
-    if logined:
+    if user:
         if request.method == 'POST':
             pass
         return render_template('change_pass.html')
@@ -164,61 +187,10 @@ def change_password():
 
 @app.route('/my_account/change_user', methods=['GET', 'POST'])
 def change_user():
-    global logined
-    if logined:
-        return render_template('change_user.html')
-    return redirect(url_for('login'))
-
-
-@app.route("/my_account/process_input", methods=['POST'])
-def edit_logic():
-    global lines, logined
-    if logined:
-        selected = request.form["announcement"]
-        title = request.form["title"]
-        descrip = request.form["descrip"]
-        importance = request.form["importance"]
-        if title not in (line.split(":")[0] for line in lines):
-            for index, line in enumerate(lines[:-1]):
-                new = line.split(":")
-                if new[0] == selected:
-                    if title:
-                        new[0] = title
-                    if descrip:
-                        new[1] = descrip
-                    if importance.lower() == "important":
-                        new[3] = 'True'
-                    elif importance.lower() == "unimportant":
-                        new[3] = 'False'
-                    lines[index] = ":".join(new)
-            with open('database.txt', 'w') as file:
-                file.write("\n".join(lines))
-            return redirect(url_for('my_account'))
-        else:
-            my_notices = {line.split(":")[0]: [line.split(":")[1], line.split(":")[2], line.split(":")[3]]
-                          for line in lines[:-1] if line.split(":")[2] == user}
-            return render_template('edit.html', notices=my_notices, target=selected)
-    return redirect(url_for('login'))
-
-
-@app.route('/my_account/add/add_logic', methods=['POST'])
-def add_logic():
-    global lines, user
     if user:
-        title = request.form['title']
-        if title not in (line.split(":")[0] for line in lines):
-            descrip = request.form['descrip']
-            importance = request.form['importance']
-            if importance == 'Important':
-                importance = 'True'
-            else:
-                importance = 'False'
-            new_notice = ':'.join([title, descrip, user, importance])
-            lines.insert(-1, new_notice)
-            with open("database.txt", "w") as file:
-                file.write("\n".join(lines))
-            return redirect(url_for('my_account'))
-        return redirect(url_for('add'))
+        if request.method == "POST":
+            pass
+        return render_template('change_user.html')
     return redirect(url_for('login'))
 
 
