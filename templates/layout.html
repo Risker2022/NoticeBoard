@@ -16,7 +16,7 @@
 
     <nav class="navbar navbar-expand-sm bg-secondary navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Notice Board</a>
+            <a class="navbar-brand" href="/home">Notice Board</a>
             <ul class="navbar-nav">
                 <li class="navbar-item">
                     <a class="nav-link" href="/">Home</a>
@@ -30,6 +30,9 @@
                 {% if logined %}
                 <li class="navbar-item">
                     <a class="nav-link" href="/my_account">My Account</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 {% else %}
                 <li class="navbar-item">

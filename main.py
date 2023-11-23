@@ -17,7 +17,7 @@ def read_file(file="database.json"):
 
 def update_file(new_data, file='database.json'):
     with open(file, 'w') as file:
-        json.dump(new_data, file)
+        json.dump(new_data, file, indent=2)
 
 
 def hash_obj(obj):
@@ -49,7 +49,13 @@ def home():
 
 @app.route("/all")
 def announcements():
-    return render_template("all.html", notices=notices, logined=user)
+    important = {title: specifications for title, specifications in notices.items()
+                 if specifications[-1] == "True"}
+    unimportant = {title: specifications for title, specifications in notices.items()
+                   if specifications[-1] == "False"}
+    reformatted = important
+    reformatted.update(unimportant)
+    return render_template("all.html", notices=reformatted, logined=user)
 
 
 @app.route("/search", methods=["POST"])
@@ -72,8 +78,8 @@ def login():
         if username in accounts:
             if accounts[username] == password:
                 user = username
-                my_notices = {title: specifications for title, specifications in notices
-                              if specifications[2] == user}
+                my_notices = {title: specifications for title, specifications in notices.items()
+                              if specifications[1] == user}
                 return redirect(url_for('home'))
         failed = True
 
@@ -91,10 +97,9 @@ def sign_up():
         confirm_pass = hash_obj(request.form['com_password'])
 
         if new_username not in accounts and confirm_pass == new_password:
-
             accounts[new_username] = new_password
             data["accounts"] = accounts
-            update_file(accounts)
+            update_file(data)
 
             user = new_username
 
@@ -106,7 +111,13 @@ def sign_up():
 @app.route("/my_account")
 def my_account():
     if user:
-        return render_template('my_account.html', notices=my_notices, logined=user)
+        important = {title: specifications for title, specifications in my_notices.items()
+                     if specifications[-1] == "True"}
+        unimportant = {title: specifications for title, specifications in my_notices.items()
+                       if specifications[-1] == "False"}
+        reformatted = important
+        reformatted.update(unimportant)
+        return render_template('my_account.html', notices=reformatted, logined=user)
     return redirect(url_for('login'))
 
 
@@ -131,12 +142,12 @@ def edit(title):
                     temp[1][2] = 'True'
                 elif importance.lower() == "unimportant":
                     temp[1][2] = 'False'
-                notices.update({temp[0]:temp[1]})
-                my_notices.update({temp[0]:temp[1]})
+                notices.update({temp[0]: temp[1]})
+                my_notices.update({temp[0]: temp[1]})
                 data["announcements"] = notices
                 update_file(data)
                 return redirect(url_for('my_account'))
-        return render_template('edit.html', notices=my_notices, target=title)
+        return render_template('edit.html', notices=my_notices, target=title, logined=user)
     return redirect(url_for('login'))
 
 
@@ -144,13 +155,11 @@ def edit(title):
 def delete(title):
     global data, notices, my_notices
     if user:
-        for header, specifications in notices.items():
-            if header == title and specifications == user:
-                del notices[title]
-                del my_notices[title]
-                data["announcements"] = notices
-                update_file(data)
-                break
+        if title in my_notices:
+            del notices[title]
+            del my_notices[title]
+            data["announcements"] = notices
+            update_file(data)
         return redirect(url_for('my_account'))
     return redirect(url_for('login'))
 
@@ -168,11 +177,12 @@ def add():
                     importance = 'True'
                 else:
                     importance = 'False'
-                notices.update({title:[descrip,user,importance]})
-                my_notices.update({title:[descrip,user,importance]})
+                notices.update({title: [descrip, user, importance]})
+                my_notices.update({title: [descrip, user, importance]})
                 data["announcements"] = notices
+                update_file(data)
                 return redirect(url_for('my_account'))
-        return render_template('add.html')
+        return render_template('add.html', logined=user)
     return redirect(url_for('login'))
 
 
@@ -181,16 +191,34 @@ def change_password():
     if user:
         if request.method == 'POST':
             pass
-        return render_template('change_pass.html')
+        return render_template('change_pass.html', logined=user)
     return redirect(url_for('login'))
 
 
 @app.route('/my_account/change_user', methods=['GET', 'POST'])
 def change_user():
+    global user, data, accounts, notices, my_notices
     if user:
         if request.method == "POST":
-            pass
-        return render_template('change_user.html')
+            old_username = request.form["curr_user"]
+            new_username = request.form["new_user"]
+            com_new_user = request.form["com_new_user"]
+            if old_username == user and new_username == com_new_user:
+                accounts.update({new_username: accounts[user]})
+                del accounts[user]
+                user = new_username
+
+                for title, specifications in notices.items():
+                    if specifications[1] == old_username:
+                        notices[title] = [specifications[0], user, specifications[2]]
+
+                my_notices = {title: specifications for title, specifications in notices.items()
+                              if specifications[1] == user}
+
+                data["announcements"], data["accounts"] = notices, accounts
+                update_file(data)
+                return redirect(url_for("my_account"))
+        return render_template('change_user.html', logined=user)
     return redirect(url_for('login'))
 
 

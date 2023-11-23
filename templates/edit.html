@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="container">
-    <form action="/my_account/process_input" method="post">
+    <form action="/my_account/edit/{{ target }}" method="post">
         <label for="notice"><b>Announcement to change:</b></label>
         <br>
         <select name="announcement" id="notice">
