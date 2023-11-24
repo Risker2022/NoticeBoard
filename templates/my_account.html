@@ -57,10 +57,23 @@
             <input type="submit" style="font-size: 20px" value="Change Username">
         </form>
     </div>
+    <script>
+    function deleteAccount() {
+
+        var confirmation = window.confirm("Are you sure you want to delete your account?");
+
+
+        if (confirmation) {
+
+          window.location.href = "/my_account/del_acc";
+        } else {
+
+          window.location.href = "/my_account";
+        }
+    }
+    </script>
     <div class="col-sm-2">
-        <form action="/my_account/del_acc" method="get">
-            <input type="submit" style="font-size: 20px" value="Delete Account">
-        </form>
+        <button onclick="deleteAccount()" style="font-size: 20px">Delete Account</button>
     </div>
 </div>
 {% endblock content %}

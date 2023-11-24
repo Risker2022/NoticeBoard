@@ -188,10 +188,22 @@ def add():
 
 @app.route('/my_account/change_pass', methods=["GET", "POST"])
 def change_password():
+    global data, accounts
     if user:
         if request.method == 'POST':
-            pass
+            curr_username = request.form["curr_user"]
+            curr_pass = hash_obj(request.form["curr_pass"])
+            new_pass = hash_obj(request.form["new_pass"])
+            com_new_pass = hash_obj(request.form["com_new_pass"])
+
+            if curr_username == user and curr_pass == accounts[user] and new_pass == com_new_pass:
+                accounts[curr_username] = new_pass
+                data["accounts"] = accounts
+                update_file(data)
+                return redirect(url_for("my_account"))
+
         return render_template('change_pass.html', logined=user)
+
     return redirect(url_for('login'))
 
 
@@ -220,6 +232,33 @@ def change_user():
                 return redirect(url_for("my_account"))
         return render_template('change_user.html', logined=user)
     return redirect(url_for('login'))
+
+
+@app.route("/my_account/del_acc")
+def delete_account():
+    global data, accounts, notices, my_notices, user
+    if user:
+        for title in my_notices:
+            del notices[title]
+        my_notices = {}
+
+        del accounts[user]
+        user = None
+        data["announcements"], data["accounts"] = notices, accounts
+        update_file(data)
+        return redirect(url_for("home"))
+
+    return redirect(url_for('login'))
+
+
+@app.route("/logout")
+def logout():
+    global user, my_notices
+    if user:
+        user = None
+        my_notices = {}
+        return redirect(url_for("home"))
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":

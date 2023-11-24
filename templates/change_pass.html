@@ -1,1 +1,26 @@
 {% extends 'layout.html' %}
+{% block content %}
+<div style="display:flex; justify-content: center;">
+    <div class="input-box">
+        <form action="/my_account/change_pass" method="post">
+            <label for="curr_user">Current Username:</label>
+            <br>
+            <input type="text" id="curr_user" name="curr_user" required>
+            <br>
+            <label for="curr_pass">Current Password:</label>
+            <br>
+            <input type="password" id="curr_pass" name="curr_pass" required>
+            <hr>
+            <label for="new_pass">New Password:</label>
+            <br>
+            <input type="password" id="new_pass" name="new_pass" required>
+            <br>
+            <label for="com_new_pass">Confirm New Password:</label>
+            <br>
+            <input type="password" id="com_new_pass" name="com_new_pass" required>
+            <hr>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+{% endblock content %}

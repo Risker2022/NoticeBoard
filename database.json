@@ -34,16 +34,10 @@
       "Test Descrip",
       "Person1",
       "True"
-    ],
-    "Test Title 8": [
-      "Test Descrip",
-      "Person3",
-      "True"
     ]
   },
   "accounts": {
     "Person1": "88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
-    "Person2": "9727bc3a31f5a09994a8408791a22db4b12502452e6e5d00a59a0ef8342b41cf",
-    "Person3": "e5e088a0b66163a0a26a5e053d2a4496dc16ab6e0e3dd1adf2d16aa84a078c9d"
+    "Person2": "9727bc3a31f5a09994a8408791a22db4b12502452e6e5d00a59a0ef8342b41cf"
   }
 }

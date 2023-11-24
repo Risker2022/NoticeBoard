@@ -16,3 +16,11 @@ div.announcement-container {
     align-items: center;
     justify-content: center;
 }
+.input-box{
+    display: flex;
+    width: 20%;
+    padding-top: 50px;
+    padding-bottom: 100px;
+    border: 3px solid black;
+    justify-content: center;
+}
