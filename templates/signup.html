@@ -16,6 +16,11 @@
         <div class="centered-element">
             <h1>Signup</h1>
             <form action="/signup" method="POST">
+                <label for="email">Email:</label>
+                <br>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <br>
+                <br>
                 <label for="username">Username:</label>
                 <br>
                 <input type="text" id="username" name="username" placeholder="Username" required>
@@ -33,10 +38,11 @@
                 <br>
                 <button type="submit">Submit</button>
             </form>
-            <form action="/">
-                <button type="button">Back</button>
+            <form action="/home">
+                <button type="submit">Back</button>
             </form>
         </div>
+        <p>Already have an account? Go <a href="/login">log in</a>.</p>
     </div>
 </body>
 </html>

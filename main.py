@@ -28,6 +28,7 @@ def hash_obj(obj):
 
 data = read_file()
 notices = data["announcements"]
+groups = data["groups"]
 accounts = data["accounts"]
 my_notices = {}
 
@@ -44,7 +45,11 @@ def starter():
 def home():
     important = {title: specifications for title, specifications in notices.items()
                  if specifications[-1] == "True"}
-    return render_template('home.html', notices=important, logined=user)
+    unimportant = {title: specifications for title, specifications in notices.items()
+                   if specifications[-1] == "False"}
+    reformatted = important
+    reformatted.update(unimportant)
+    return render_template('home.html', notices=reformatted, groups=groups, logined=user)
 
 
 @app.route("/all")

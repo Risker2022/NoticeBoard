@@ -36,6 +36,27 @@
       "True"
     ]
   },
+  "groups": {
+    "Important": {
+      "descrip": "A group for all the important notices",
+      "creator": "System",
+      "important": "True",
+      "announcements": [
+        "Welcome Announcement",
+        "Testing a new feature",
+        "Test Title 4",
+        "Test Title 6"
+      ]
+    },
+    "Test Group 1": {
+      "descrip": "",
+      "creator": "Person1",
+      "important": "True",
+      "announcements": [
+        "Welcome Announcement"
+      ]
+    }
+  },
   "accounts": {
     "Person1": "88d4266fd4e6338d13b845fcf289579d209c897823b9217da3e161936f031589",
     "Person2": "9727bc3a31f5a09994a8408791a22db4b12502452e6e5d00a59a0ef8342b41cf"

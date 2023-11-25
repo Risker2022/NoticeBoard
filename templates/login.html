@@ -28,10 +28,14 @@
                 <br>
                 <button type="submit">Submit</button>
             </form>
+            <form action="/home">
+                <button type="submit">Back</button>
+            </form>
             {% if failed == True %}
                 <h2 style="background-color: pink; color: red">You have entered the wrong username or password. Please try again.</h2>
             {% endif %}
         </div>
+        <p>Don't have an account? Go to <a href="/signup">sign up</a>.</p>
     </div>
 </body>
 </html>

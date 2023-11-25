@@ -1,3 +1,10 @@
+html, body {
+    min-width: 1000px
+}
+section {
+    display: flex;
+    justify-content: center;
+}
 h1 {
     font-family: fantasy;
     color: black;
@@ -6,15 +13,38 @@ a.navbar-brand {
     font-family: fantasy;
 }
 div.announcement {
-    margin: 5px;
+    margin: 10px;
     border: 3px solid;
     padding: 5px;
+    max-height: 350px;
+    overflow: auto;
 }
 div.announcement-container {
     margin: 2px;
     padding: 8px;
     align-items: center;
     justify-content: center;
+}
+div.group-container {
+    /* display: flex; */
+    width: 80%;
+    background-color: hsla(0, 0%, 60%, .6);
+    justify-content: center;
+}
+div.group {
+    padding: 20px;
+    border: 3px solid;
+    margin: 10px;
+    padding; 5px;
+    margin-bottom: 20px;
+    max-height: 350px;
+}
+a.block-link{
+    text-decoration: none;
+    color: black;
+}
+a.block-link a{
+    text-decoration: underline;
 }
 .input-box{
     display: flex;
@@ -23,4 +53,11 @@ div.announcement-container {
     padding-bottom: 100px;
     border: 3px solid black;
     justify-content: center;
+}
+div.footer-nav {
+    background-color: darkgrey;
+    width: 80%;
+    min-height: 200px;
+    padding: 20px;
+    margin-bottom: 10px;
 }
