@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <section>
+        <div class="div-container">
+            <h1>Groups:</h1>
+            <div class="item-container flex-container">
+                {% for group, details in groups.items() %}
+                    <div class="group" id="G{{ group }}">
+                        <h3>{{ group }}</h3>
+                        <hr>
+                        <a href="/groups/{{ group }}" class="block-link">
+                            <div class="space-filler">
+                                {% if details["descrip"] %}
+                                    <p>{{ details["descrip"] }}</p>
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <p class="blockquote-footer" style="display: inline">Made by {{ details["creator"] }}</p>
+                            <a href="/groups/{{ group }}" style="float: right">>>></a>
+                        </a>
+                    </div>
+                    <script>
+                        checkImportanceGroup("{{ group }}", "{{ details['important'] }}")
+                    </script>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock content %}

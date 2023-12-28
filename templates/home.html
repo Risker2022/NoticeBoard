@@ -6,8 +6,8 @@
                 <h1>Important <br>Announcements</h1>
             </div>
             <div style="padding: 5px">
-                {% for notice, value in notices.items() %}
-                    {% if value[2] == 'True' %}
+                {% for notice, value in important.items() %}
+                    {% if value[-1] == 'True' %}
                     <div style="border: 5px solid; margin: 5px; padding: 5px">
                         <h3>{{ notice }}</h3>
                         <p class="blockquote">{{ value[0] }}</p>
@@ -19,14 +19,15 @@
         </div>
     </section>
     <section>
-        <div class="group-container row">
-            {% for title, specifications in groups.items() %}
-                {% if specifications["important"] == "True" %}
-                    <div class="group col-sm-2" style="border-color: darkred">
+        <div class="div-container">
+            <h1>Notices:</h1>
+            <div class="item-container flex-container">
+                {% for title, specifications in groups.items() %}
+                    <div class="group" id="G{{ title }}">
                         <h3>{{ title }}</h3>
                         <hr>
                         <a href="/groups/{{ title }}" class="block-link">
-                            <div style="height: 150px; overflow: auto;">
+                            <div class="space-filler">
                                 {% if specifications["descrip"] %}
                                     <p>{{ specifications["descrip"] }}</p>
                                 {% endif %}
@@ -36,33 +37,24 @@
                             <a href="/groups/{{ title }}" style="float: right">>>></a>
                         </a>
                     </div>
-                {% else %}
-
-                {% endif %}
-            {% endfor %}
-            {% for notice, value in notices.items() %}
-            {% if value[2] == 'False' %}
-                <div class="col-sm-2 announcement" style="background-color: darkblue">
-                    <h3 style="color: white">{{ notice }}</h3>
-                    <hr>
-                    <div style="height: 150px; overflow: auto">
-                        <p class="blockquote" style="color: white">{{ value[0] }}</p>
+                    <script>
+                        checkImportanceGroup("{{ title }}", "{{ specifications['important'] }}")
+                    </script>
+                {% endfor %}
+                {% for notice, value in notices.items() %}
+                    <div class="announcement" style="background-color: blue">
+                        <h3 style="color: white">{{ notice }}</h3>
+                        <hr>
+                        <div style="height: 150px; overflow: auto">
+                            <p class="blockquote" style="color: white">{{ value[0] }}</p>
+                        </div>
+                        <hr>
+                        <p class="blockquote-footer">Written by {{ value[1] }}</p>
                     </div>
-                    <hr>
-                    <p class="blockquote-footer">Written by {{ value[1] }}</p>
-                </div>
-            {% else %}
-                <div class="col-sm-2 announcement" style="background-color: darkred">
-                    <h3 style="color: white">{{ notice }}</h3>
-                    <hr>
-                    <div style="height: 150px; overflow: auto">
-                        <p class="blockquote" style="color: white">{{ value[0] }}</p>
-                    </div>
-                    <hr>
-                    <p class="blockquote-footer">Written by {{ value[1] }}</p>
-                </div>
-            {% endif %}
-        {% endfor %}
+                
+                {% endfor %}
+            </div>
         </div>
+        
     </section>
 {% endblock content %}

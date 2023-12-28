@@ -1,25 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1 style="text-align: center"><strong>All Announcements</strong></h1>
-    <div class="row announcement-container">
-        {% for notice, value in notices.items() %}
-            {% if value[2] == 'False' %}
-                <div class="col-sm-2 announcement" style="background-color: darkblue">
+<section>
+    <div class="div-container">
+        <h1><strong>All Announcements</strong></h1>
+        <div class="item-container flex-container">
+            
+            {% for notice, value in notices.items() %}
+                <div class="announcement" id="N{{ notice }}">
                     <h3 style="color: white">{{ notice }}</h3>
                     <hr>
-                    <p class="blockquote" style="color: white">{{ value[0] }}</p>
-                    <br>
-                    <p class="blockquote-footer">Written by {{ value[1] }}</p>
-                </div>
-            {% else %}
-                <div class="col-sm-2 announcement" style="background-color: darkred">
-                    <h3 style="color: white">{{ notice }}</h3>
+                    <p class="blockquote space-filler" style="color: white;">{{ value[0] }}</p>
                     <hr>
-                    <p class="blockquote" style="color: white">{{ value[0] }}</p>
-                    <br>
                     <p class="blockquote-footer">Written by {{ value[1] }}</p>
                 </div>
-            {% endif %}
-        {% endfor %}
+                <script>
+                    checkImportanceNotice("{{ notice }}", "{{ value[-1] }}")
+                </script>
+            {% endfor %}
+        </div>
     </div>
+    
+</section>
 {% endblock content %}

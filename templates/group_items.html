@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+<section>
+    <div class="div-container">
+        <h1><strong>Announcements in {{ group_name }}</strong></h1>
+        {% if notices == {} %}
+            <h3>There are no announcements in this group</h3>
+        {% else %}
+            <div class="item-container flex-container">
+                {% for notice, value in notices.items() %}
+                    <div class="announcement" id="N{{ notice }}">
+                        <h3 style="color: white">{{ notice }}</h3>
+                        <hr>
+                        <p class="blockquote space-filler" style="color: white;">{{ value[0] }}</p>
+                        <hr>
+                        <p class="blockquote-footer">Written by {{ value[1] }}</p>
+                    </div>
+                    <script>
+                        checkImportanceNotice("{{ notice }}", "{{ value[-1] }}")
+                    </script>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <a href="/" class="button-style"><<< Exit</a>
+    </div>
+    
+</section>
+{% endblock content %}

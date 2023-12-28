@@ -1,38 +1,45 @@
 {
   "announcements": {
     "Welcome Announcement": [
-      "Hello! This is a site where announcements can be posted for better tracking",
+      "Hello! This is a site where announcements can be posted for better tracking.",
       "Admin",
+      "",
       "True"
     ],
     "Testing a new feature": [
       "Why are you reading me",
       "Person1",
+      "Test Group 1",
       "True"
     ],
     "Test Title 3": [
       "Test Descrip",
       "Person2",
+      "",
       "False"
     ],
     "Test Title 4": [
       "Test Descrip",
       "Person2",
+      "",
       "True"
     ],
     "Test Title 5": [
       "Test Descrip",
       "Person1",
+      "",
       "False"
     ],
     "Test Title 7": [
       "Test Descrip",
       "Person1",
+      "",
       "False"
     ],
     "Test Title 6": [
       "Test Descrip",
       "Person1",
+      "",
       "True"
     ]
   },
@@ -40,21 +47,12 @@
     "Important": {
       "descrip": "A group for all the important notices",
       "creator": "System",
-      "important": "True",
-      "announcements": [
-        "Welcome Announcement",
-        "Testing a new feature",
-        "Test Title 4",
-        "Test Title 6"
-      ]
+      "important": "True"
     },
     "Test Group 1": {
       "descrip": "",
       "creator": "Person1",
-      "important": "True",
-      "announcements": [
-        "Welcome Announcement"
-      ]
+      "important": "True"
     }
   },
   "accounts": {

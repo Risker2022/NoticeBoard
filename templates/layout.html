@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
     {% if title %}
     <title>Notice Board</title>
     {% else %}
@@ -24,6 +25,9 @@
                     <a class="nav-link" href="/all">Announcements</a>
                 </li>
                 <li class="navbar-item">
+                    <a class="nav-link" href="/groups">Groups</a>
+                </li>
+                <li class="navbar-item">
                     <a class="nav-link" href="#">|</a>
                 </li>
                 {% if logined %}
@@ -32,6 +36,9 @@
                 </li>
                 <li class="navbar-item">
                     <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                <li class="navbar-item">
+                    <a class="nav-link" href="#">Logined as {{ logined }}</a>
                 </li>
                 {% else %}
                 <li class="navbar-item">
@@ -51,7 +58,7 @@
     {% block content %}
     {% endblock %}
     <hr>
-    <footer style="display: flex; justify-content: center; margin-top: 50px">
+    <footer class="flex-container" style="margin-top: 50px">
         <div class="footer-nav">
             <!-- Put this code anywhere in the body of your page where you want the badge to show up. -->
 

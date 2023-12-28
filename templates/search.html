@@ -1,18 +1,39 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% if notices == {} %}
-        <h1 style="text-align: center"><strong>No Announcement Found</strong></h1>
+    {% if notices == {} and groups == {} %}
+        <h1><strong>Nothing Found</strong></h1>
         <h3 style="text-align: center">Please search another keyword.</h3>
     {% else %}
-        <h1 style="text-align: center"><strong>Search Results</strong></h1>
-        <div class="row announcement-container">
-            {% for notice in notices %}
-                <div class="col-sm-2 announcement" style="background-color: green">
+        <h1><strong>Search Results</strong></h1>
+        <div class="item-container flex-container">
+            {% for title, specifications in groups.items() %}
+                <div id="G{{ title }}" class="group">
+                    <h3>{{ title }}</h3>
+                    <hr>
+                    <a href="/groups/{{ title }}" class="block-link">
+                        <div class="space-filler">
+                            {% if specifications["descrip"] %}
+                                <p>{{ specifications["descrip"] }}</p>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <p class="blockquote-footer" style="display: inline">Made by {{ specifications["creator"] }}</p>
+                        <a href="/groups/{{ title }}" style="float: right">>>></a>
+                    </a>
+                </div>
+                <script>
+                    checkImportanceGroup("{{ title }}", "{{ specifications['important'] }}")
+                </script>
+            {% endfor %}
+            {% for notice, value in notices.items() %}
+                <div class="announcement" style="background-color: green">
                     <h3 style="color: white">{{ notice }}</h3>
                     <hr>
-                    <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
-                    <br>
-                    <p class="blockquote-footer" style="color: black">Written by {{ notices[notice][1] }}</p>
+                    <div style="height: 150px; overflow: auto">
+                        <p class="blockquote" style="color: white">{{ value[0] }}</p>
+                    </div>
+                    <hr>
+                    <p class="blockquote-footer">Written by {{ value[1] }}</p>
                 </div>
             {% endfor %}
         </div>

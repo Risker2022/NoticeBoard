@@ -1,44 +1,59 @@
 {% extends 'layout.html' %}
 {% block content %}
-    {% if notices == {} %}
-        <h1 style="text-align: center">You Have No Announcements</h1>
-    {% else %}
-        <h1 style="text-align: center">My Announcements</h1>
+<section>
+    <div class="div-container">
+        {% if notices == {} and groups == {} %}
+            <h1 style="text-align: center">You Have Not Made Anything</h1>
+        {% else %}
+            <h1 style="text-align: center">My Announcements and Groups</h1>
 
-        <div class="row announcement-container">
-            {% for notice in notices %}
-                {% if notices[notice][2] == 'True' %}
-                    <div class="col-sm-2 announcement row" style="background-color: darkred">
+            <div class="item-container flex-container">
+                {% for group, details in groups.items() %}
+                    <div class="group" id="G{{ group }}">
+                        <h3>{{ group }}</h3>
+                        <hr>
+                        <a href="/my_account/groups/{{ group }}" class="block-link">
+                            <div class="space-filler">
+                                {% if details["descrip"] %}
+                                    <p>{{ details["descrip"] }}</p>
+                                {% endif %}
+                            </div>
+                            <hr>
+                            <p class="blockquote-footer" style="display: inline">Made by {{ details["creator"] }}</p>
+                            <a href="/my_account/groups{{ group }}" style="float: right">>>></a>
+                        </a>
+                        <hr>
+                        <div class="flex-container">
+                            <a href="/my_account/edit_group/{{ group }}">Edit</a>
+                            <a href="/my_account/del_group/{{ group }}">Delete</a>
+                        </div>
+                    </div>
+                    <script>
+                        checkImportanceGroup("{{ group }}", "{{ details['important'] }}")
+                    </script>
+                {% endfor %}
+                {% for notice in notices %}
+                    <div class="announcement" id="N{{ notice }}">
                         <h3 style="color: white">{{ notice }}</h3>
                         <hr>
                         <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
                         <br>
                         <hr>
-                        <div class="col-sm-6">
-                            <a href="/my_account/edit/{{ notice }}">Edit</a>
-                        </div>
-                        <div class="col-sm-6">
+                        <div class="flex-container">
+                            <a href="/my_account/edit/{{ notice }}" style="text-align: left">Edit</a>
                             <a href="/my_account/delete/{{ notice }}" style="text-align: right">Delete</a>
                         </div>
                     </div>
-                {% else %}
-                    <div class="col-sm-2 announcement row" style="background-color: darkblue">
-                        <h3 style="color: white">{{ notice }}</h3>
-                        <hr>
-                        <p class="blockquote" style="color: white">{{ notices[notice][0] }}</p>
-                        <br>
-                        <hr>
-                        <div class="col-sm-6">
-                            <a href="/my_account/edit/{{ notice }}">Edit</a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="/my_account/delete/{{ notice }}" style="text-align: right">Delete</a>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
+                    <script>
+                        checkImportanceNotice("{{ notice }}", "{{ notices[notice][-1] }}")
+                    </script>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+</section>
+    
 <hr>
 <div style="text-align: center">
     <form action="/my_account/add" method="get">
